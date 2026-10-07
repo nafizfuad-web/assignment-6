@@ -1,24 +1,28 @@
-# FitLog
+## Project name
 
-FitLog is a workout library for discovering exercises and organizing a personal
-training plan. Browse workouts, view exercise details, save favorites, and track
-your planned sessions.
+FitLog
 
-## Features
+## Short description
 
-- Browse workouts with duration, calories, equipment, and rating details.
-- View individual workout instructions and information.
-- Add workouts to today's plan or save them for later.
-- Mark planned workouts as complete and remove items when needed.
-- Review plan metrics and sort workouts by duration, calories, or rating.
-- Keep your plan and saved workouts in browser local storage.
+FitLog is a workout library for discovering exercises, viewing workout details,
+and organizing a personal training plan.
 
-## Tech stack
+## Technologies used
 
 - Next.js App Router
-- React and TypeScript
-- Tailwind CSS 4 and DaisyUI
-- Workout data from the FitLog API
+- React
+- TypeScript
+- Tailwind CSS 4
+- DaisyUI
+- FitLog Workout API
+
+## 5 key features
+
+1. Browse workouts with duration, calories, equipment, and ratings.
+2. View detailed information and instructions for each workout.
+3. Add workouts to today's plan or save them for later.
+4. Mark planned workouts as complete, remove them, and review plan metrics.
+5. Sort workouts and persist the plan and saved workouts in browser storage.
 
 ## Requirements
 
