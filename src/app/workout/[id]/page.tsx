@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, use, useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePlan } from "@/context/PlanContext";
 import { getWorkoutById } from "@/utils/api";
@@ -123,9 +124,11 @@ function WorkoutDetailsContent({
 
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="h-fit overflow-hidden rounded-2xl border border-line bg-card">
-          <img
+          <Image
             src={workout.image}
             alt={workout.name}
+            width={740}
+            height={740}
             className="max-h-[680px] w-full object-cover"
           />
         </div>

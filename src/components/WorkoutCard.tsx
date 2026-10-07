@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Workout } from "@/types";
 
@@ -7,11 +8,13 @@ export default function WorkoutCard({ workout }: { workout: Workout }) {
       href={`/workout/${workout.id}`}
       className="group block overflow-hidden rounded-xl border border-line bg-card transition hover:-translate-y-1 hover:border-accent/50"
     >
-      <div className="overflow-hidden">
-        <img
+      <div className="relative h-40 overflow-hidden">
+        <Image
           src={workout.image}
           alt={workout.name}
-          className="h-40 w-full object-cover transition duration-300 group-hover:scale-110"
+          fill
+          sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          className="object-cover transition duration-300 group-hover:scale-110"
         />
       </div>
       <div className="p-4">
