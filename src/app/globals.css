@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+@theme {
+  --color-accent: #ccff00;
+  --color-bg: #0a0a0a;
+  --color-card: #1a1a1a;
+  --color-line: #2a2a2a;
+  --font-heading: var(--font-oswald);
+  --font-body: var(--font-inter);
+}
+
+body {
+  background: var(--color-bg);
+  color: #ffffff;
+  font-family: var(--font-body), sans-serif;
+}
