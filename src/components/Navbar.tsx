@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { usePlan } from "@/context/PlanContext";
@@ -13,24 +14,18 @@ export default function Navbar() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
         <Link
           href="/"
-          className="flex items-center gap-2 font-heading text-2xl text-white"
+          className="flex items-center"
           aria-label="FitLog home"
         >
-          <svg
+          <Image
+            src="/assets/logo.png"
+            alt=""
             aria-hidden="true"
-            viewBox="0 0 24 24"
-            fill="none"
-            className="h-6 w-6 text-accent"
-          >
-            <path
-              d="M4 9v6m4-9v12m8-12v12m4-9v6M2 12h20"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          FITLOG
+            width={40}
+            height={40}
+            priority
+          />
+          <span className="font-heading text-2xl text-white">FITLOG</span>
         </Link>
 
         <div className="hidden items-center gap-8 sm:flex">

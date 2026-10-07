@@ -3,6 +3,7 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -33,6 +34,59 @@ const PlanContext = createContext<PlanContextType | undefined>(undefined);
 export function PlanProvider({ children }: { children: ReactNode }) {
   const [plan, setPlan] = useState<PlanWorkout[]>([]);
   const [saved, setSaved] = useState<Workout[]>([]);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    try {
+      const storedPlan = localStorage.getItem("fitlog-plan");
+      const storedSaved = localStorage.getItem("fitlog-saved");
+
+      if (storedPlan) {
+        const parsedPlan: unknown = JSON.parse(storedPlan);
+        if (!Array.isArray(parsedPlan)) {
+          throw new Error("Stored workout plan must be an array.");
+        }
+        // Restore client storage after mount to keep server and client renders aligned.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setPlan(parsedPlan as PlanWorkout[]);
+      }
+
+      if (storedSaved) {
+        const parsedSaved: unknown = JSON.parse(storedSaved);
+        if (!Array.isArray(parsedSaved)) {
+          throw new Error("Stored saved workouts must be an array.");
+        }
+        setSaved(parsedSaved as Workout[]);
+      }
+    } catch (error) {
+      console.error("Failed to restore workouts from localStorage.", error);
+      toast.error("Could not restore saved workouts.");
+    } finally {
+      setIsHydrated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isHydrated) {
+      try {
+        localStorage.setItem("fitlog-plan", JSON.stringify(plan));
+      } catch (error) {
+        console.error("Failed to save workout plan to localStorage.", error);
+        toast.error("Could not save your workout plan.");
+      }
+    }
+  }, [plan, isHydrated]);
+
+  useEffect(() => {
+    if (isHydrated) {
+      try {
+        localStorage.setItem("fitlog-saved", JSON.stringify(saved));
+      } catch (error) {
+        console.error("Failed to save workouts to localStorage.", error);
+        toast.error("Could not save your saved workouts.");
+      }
+    }
+  }, [saved, isHydrated]);
 
   function addToPlan(workout: Workout) {
     if (plan.some((item) => item.id === workout.id)) {
