@@ -6,6 +6,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 import toast from "react-hot-toast";
@@ -30,6 +31,18 @@ interface PlanContextType {
 }
 
 const PlanContext = createContext<PlanContextType | undefined>(undefined);
+
+const subscribeToHydration = () => () => {};
+const getHydrationSnapshot = () => true;
+const getServerHydrationSnapshot = () => false;
+
+export function useIsHydrated() {
+  return useSyncExternalStore(
+    subscribeToHydration,
+    getHydrationSnapshot,
+    getServerHydrationSnapshot,
+  );
+}
 
 export function PlanProvider({ children }: { children: ReactNode }) {
   const [plan, setPlan] = useState<PlanWorkout[]>([]);

@@ -3,7 +3,7 @@
 import { Suspense, use, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePlan } from "@/context/PlanContext";
+import { useIsHydrated, usePlan } from "@/context/PlanContext";
 import { getWorkoutById } from "@/utils/api";
 import type { Workout } from "@/types";
 
@@ -36,6 +36,7 @@ function WorkoutDetailsContent({
 }) {
   const { id } = use(params);
   const { plan, addToPlan, addToSaved } = usePlan();
+  const isHydrated = useIsHydrated();
   const [workout, setWorkout] = useState<Workout | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -100,8 +101,9 @@ function WorkoutDetailsContent({
     );
   }
 
-  const isPlanFull = plan.length >= 5;
-  const isAlreadyInPlan = plan.some((item) => item.id === workout.id);
+  const isPlanFull = isHydrated && plan.length >= 5;
+  const isAlreadyInPlan =
+    isHydrated && plan.some((item) => item.id === workout.id);
 
   const specs = [
     ["Equipment", workout.equipment],
@@ -143,7 +145,7 @@ function WorkoutDetailsContent({
             {workout.muscleGroups.map((muscleGroup) => (
               <span
                 key={muscleGroup}
-                className="rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase text-black"
+                className="rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase text-accent-text"
               >
                 {muscleGroup}
               </span>
@@ -186,7 +188,7 @@ function WorkoutDetailsContent({
             <button
               onClick={() => addToPlan(workout)}
               disabled={isPlanFull || isAlreadyInPlan}
-              className="rounded-lg bg-accent px-5 py-3 font-semibold text-black disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-lg bg-accent px-5 py-3 font-semibold text-accent-text disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isAlreadyInPlan
                 ? "Already in Plan"

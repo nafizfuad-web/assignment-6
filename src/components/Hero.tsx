@@ -20,7 +20,7 @@ export default function Hero() {
           </p>
           <Link
             href="#library"
-            className="mt-7 inline-flex rounded-full bg-accent px-5 py-3 text-sm font-bold tracking-wide text-bg transition hover:brightness-90"
+            className="mt-7 inline-flex rounded-full bg-accent px-5 py-3 text-sm font-bold tracking-wide text-accent-text transition hover:brightness-90"
           >
             BROWSE WORKOUTS
           </Link>

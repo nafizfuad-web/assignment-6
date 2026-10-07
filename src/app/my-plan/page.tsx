@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePlan } from "@/context/PlanContext";
+import { useIsHydrated, usePlan } from "@/context/PlanContext";
 
 type ActiveTab = "plan" | "saved";
 type SortBy = "duration" | "calories" | "rating";
@@ -18,18 +18,25 @@ export default function MyPlanPage() {
     markAsDone,
   } = usePlan();
 
+  const isHydrated = useIsHydrated();
   const [activeTab, setActiveTab] = useState<ActiveTab>("plan");
   const [sortBy, setSortBy] = useState<SortBy>("duration");
 
-  const currentList = activeTab === "plan" ? plan : saved;
   const sortedList = useMemo(
-    () =>
-      [...currentList].sort((a, b) => {
+    () => {
+      const currentList = isHydrated
+        ? activeTab === "plan"
+          ? plan
+          : saved
+        : [];
+
+      return [...currentList].sort((a, b) => {
         if (sortBy === "duration") return a.duration - b.duration;
         if (sortBy === "calories") return b.caloriesBurned - a.caloriesBurned;
         return b.rating - a.rating;
-      }),
-    [currentList, sortBy],
+      });
+    },
+    [activeTab, isHydrated, plan, saved, sortBy],
   );
 
   return (
@@ -43,9 +50,18 @@ export default function MyPlanPage() {
       <p className="mt-1 text-gray-400">Your workouts for today.</p>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <MetricCard label="Exercises" value={metrics.totalWorkouts} />
-        <MetricCard label="Minutes" value={metrics.totalDuration} />
-        <MetricCard label="Calories" value={metrics.totalCalories} />
+        <MetricCard
+          label="Exercises"
+          value={isHydrated ? metrics.totalWorkouts : 0}
+        />
+        <MetricCard
+          label="Minutes"
+          value={isHydrated ? metrics.totalDuration : 0}
+        />
+        <MetricCard
+          label="Calories"
+          value={isHydrated ? metrics.totalCalories : 0}
+        />
       </div>
 
       <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
@@ -59,7 +75,7 @@ export default function MyPlanPage() {
             onClick={() => setActiveTab("plan")}
             className={`rounded-lg px-4 py-2 text-sm transition ${
               activeTab === "plan"
-                ? "bg-accent font-semibold text-black"
+                ? "bg-accent font-semibold text-accent-text"
                 : "border border-line text-gray-300 hover:border-accent"
             }`}
           >
@@ -74,7 +90,7 @@ export default function MyPlanPage() {
             onClick={() => setActiveTab("saved")}
             className={`rounded-lg px-4 py-2 text-sm transition ${
               activeTab === "saved"
-                ? "bg-accent font-semibold text-black"
+                ? "bg-accent font-semibold text-accent-text"
                 : "border border-line text-gray-300 hover:border-accent"
             }`}
           >
@@ -111,7 +127,7 @@ export default function MyPlanPage() {
             </p>
             <Link
               href="/"
-              className="mt-4 inline-block rounded-lg bg-accent px-5 py-2 font-semibold text-black transition hover:brightness-90"
+              className="mt-4 inline-block rounded-lg bg-accent px-5 py-2 font-semibold text-accent-text transition hover:brightness-90"
             >
               Browse Library
             </Link>
